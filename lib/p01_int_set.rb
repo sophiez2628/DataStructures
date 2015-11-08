@@ -80,10 +80,9 @@ class ResizingIntSet
     unless include?(num)
       if @count == num_buckets
         resize!
-        @count = 0
       end
-      self[num].push(num)
-      @count += 1
+        self[num].push(num)
+        @count += 1
     end
   end
 
@@ -110,6 +109,8 @@ class ResizingIntSet
   end
 
   def resize!
+    #count should be set to zero here! 
+    @count = 0
     old_store = @store
     @store = Array.new(num_buckets * 2) { Array.new }
     old_store.each do |bucket|
