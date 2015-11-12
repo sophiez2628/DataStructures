@@ -8,17 +8,18 @@
 var stringCompression = function(input) {
   var array_count = [];
   input.split("").forEach(function(char) {
-    if (array_count.length === 0 || array_count[-1][0] !== char) {
+    if (array_count.length === 0 || (array_count[array_count.length - 1] && (array_count[array_count.length - 1][0] !== char))) {
       array_count.push([char, 1]);
     } else {
-      array_count[-1][-1] += 1;
+      array_count[array_count.length - 1][1] += 1;
     }
   });
 
+  debugger;
   var alreadyCompressed = true;
 
   array_count.forEach(function(pair) {
-    if (pair[-1] !== 1) {
+    if (pair[1] !== 1) {
       alreadyCompressed = false;
     }
   })
