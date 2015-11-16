@@ -34,3 +34,9 @@ var stringCompression = function(input) {
     return compressedString;
   }
 }
+
+//slice() method returns a shallow copy of a portion of an array into a new array object
+
+var rotateImageBy90 = function(matrix) {
+  
+}

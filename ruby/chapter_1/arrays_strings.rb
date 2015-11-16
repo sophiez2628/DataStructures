@@ -1,3 +1,4 @@
+require 'byebug'
 =begin
 Implement a method to perform basic string compression using
 the counts of repeated characters. For example, the string aabcccccaaa
@@ -25,3 +26,38 @@ def string_compression(input)
     compressed
   end
 end
+
+=begin
+Given an image represented by an NxN matrix, where each pixel in the image
+is 4 bytes, write a method to rotate the image by 90 degrees. Can you do this in place?
+algorithm is O(N^2)
+=end
+
+ def rotate_image_by_90(matrix = [[1,2,3],[4,5,6],[7,8,9]])
+   layer = 0
+   while layer < matrix.length / 2
+     offset = layer
+     num_items = matrix.length - 2 * layer
+     i = 0
+     while i < num_items
+       #save top
+       top = matrix[layer][matrix.length - 1 - offset - i]
+       debugger;
+       #left num -> top
+       matrix[layer][matrix.length - 1 - offset - i] = matrix[layer + i][layer]
+
+       #bottom -> left
+       matrix[layer + i][layer] = matrix[matrix.length - 1 - layer][i + offset]
+
+       #right to bottom
+       matrix[matrix.length - 1 - layer][i + offset] = matrix[matrix.length - layer][matrix.length - offset - i]
+
+       #top to right
+       matrix[matrix.length - layer][matrix.length - offset - i] = top
+
+       i += 1
+     end
+
+     layer += 1
+   end
+ end
