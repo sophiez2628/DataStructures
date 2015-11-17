@@ -29,3 +29,16 @@ MaxIntSet.prototype.validate = function(num) {
     return false;
   }
 };
+
+//keeps track of an arbitrary range of integers
+Array.prototype.insertEmptyArr = function(num_buckets) {
+  for (var i = 0; i < num_buckets; i++) {
+    this[i] = new Array(1);
+  }
+};
+
+function IntSet(num_buckets) {
+  this.num_buckets = num_buckets;
+  this.store = new Array(num_buckets);
+  this.store.insertEmptyArr(num_buckets);
+};
