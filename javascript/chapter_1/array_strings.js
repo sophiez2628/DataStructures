@@ -15,7 +15,6 @@ var stringCompression = function(input) {
     }
   });
 
-  debugger;
   var alreadyCompressed = true;
 
   array_count.forEach(function(pair) {
@@ -38,5 +37,27 @@ var stringCompression = function(input) {
 //slice() method returns a shallow copy of a portion of an array into a new array object
 
 var rotateImageBy90 = function(matrix) {
-  
+  var layers = Math.floor(matrix.length / 2);
+  var layer = 0;
+  while (layer < layers) {
+    var num_items = matrix.length - 1;
+    for(var i = 0; i < num_items; i++) {
+      //save top
+      var top = matrix[layer][matrix.length - 1 - i];
+
+      //move left to top pos
+      matrix[layer][matrix.length - 1 - i] = matrix[layer + i][layer];
+
+      //move bottom to left
+      matrix[layer + i][layer] = matrix[matrix.length - 1 - layer][layer + i];
+
+      //move right to bottom
+      matrix[matrix.length - 1 - layer][layer + i] = matrix[matrix.length - 1 - layer - i][matrix.length - 1 - layer];
+
+      //move saved top to right
+      matrix[matrix.length - 1 - layer - i][matrix.length - 1 - layer] = top;
+    }
+    layer += 1;
+  }
+  return matrix;
 }
