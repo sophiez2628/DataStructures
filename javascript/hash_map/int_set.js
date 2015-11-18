@@ -42,3 +42,12 @@ function IntSet(num_buckets) {
   this.store = new Array(num_buckets);
   this.store.insertEmptyArr(num_buckets);
 };
+
+IntSet.prototype.insert = function(num) {
+
+};
+
+IntSet.prototype.[] = function(num) {
+  var index = num % this.num_buckets;
+  return this.store[index];
+};
