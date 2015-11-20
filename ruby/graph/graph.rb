@@ -44,3 +44,36 @@ end
 
 #running time of bfs? O(n) iterations until we reach the node. worst case is that the target is not in graph, so worst case is O(n)
 #two measures of input for graphs: vertices and edges, do not just use n to describe running time
+
+#week 13 day 3
+#bfs - finding shortest paths in unweighted graph
+#connected components (undirected)
+
+#figure out demographics of customers, and see what the clusters are
+
+connected_components = Set.new
+vertices.each do |vertex|
+  if !explored[vertex]
+    connected_components << bfs(vertex)
+  end
+end
+
+#bfs runs in O(v + e) - every graph has two inputs, i
+#mportant to express time complexity in terms of these two inputs
+
+#topological sort (directed graph)
+#not necessarily unique
+#how to generate a topological list quickly?
+
+#sink vertex - edge goes in, but nothing goes out, last eliminate will definitely be a sink vertex
+
+#dfs always finds a sink vertex
+
+#how to pick the node that i should start searching at?
+#worst case is O(v) for a linked-list
+
+#two well-known algorithms: kahn's algorithm
+#iterate through every vertex - mark the number of in edges going into the vertex
+
+#move into queue or order
+#dependency list is unsolvable if a cycle 
