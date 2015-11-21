@@ -1,4 +1,7 @@
 require 'byebug'
+#min-heap is a complete binary tree
+#which child do i swap the new root with in order to restore the heap?
+  #the smallest one, so that the root node is the smallest 
 class MinHeap
   attr_reader :store
 
