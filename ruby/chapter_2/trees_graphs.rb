@@ -1,3 +1,4 @@
+require 'byebug'
 #tree
   #cannot contain cycles
   #nodes may or may not be in a particular order
@@ -57,7 +58,7 @@
     [0, 0, 0, 0, 0, 0]
   ]
 
-  p depth_first_search(adj_matrix, 0, 4)
+  # p depth_first_search(adj_matrix, 0, 4)
   #breadth first search - algorithm uses a queue
   def breadth_first_search(adj_matrix, source_index, end_index)
     node_queue = [source_index]
@@ -75,16 +76,17 @@
       node_queue = children + node_queue
     end
   end
-
+#4.2 Minimal Tree
 #given a sorted(increasing order) array with unique integer elements, write an
 #algorithm to create a binary search tree with minimal height
 class TreeNode
-  attr_accessor :left, :right
+  attr_accessor :left, :right, :visited
   attr_reader :val
   def initialize(val)
     @val = val
-    @left = nil;
-    @right = nil;
+    @left = nil
+    @right = nil
+    @visited = false
   end
 end
 
@@ -97,7 +99,81 @@ def createMinimalBST(arr)
     node.left = nil
   else
     node.left = createMinimalBST(arr[0...mid_index])
-  end 
+  end
   node.right = createMinimalBST(arr[(mid_index + 1)..-1])
   return node
+end
+
+#4.3 List of Depths
+  #given a binary tree, design an algorithm which creates a linked list
+  #of all the nodes at each depth
+
+class Link
+  attr_accessor :val, :next
+
+  def initialize(val, nxt = nil)
+    @val = val
+    @next = nxt
+  end
+end
+
+class LinkedList
+  def initialize
+    @head = Link.new
+    @tail = nil
+  end
+
+  def first
+    return head.next unless empty?
+    nil
+  end
+
+  def empty?
+    head.next.nil?
+  end
+
+  def last
+    current_link = head
+    next_link = head.next
+    while next_link
+      current_link = next_link
+      next_link = current_link.next
+    end
+    current_link
+  end
+
+  def insert(val)
+    last.next = Link.new(val)
+    @tail = last
+  end
+
+end
+#depth first search tends to be recursive
+def bt_depth_first_search(node, target)
+  node.visited = true
+  return node if node.val == target
+  left = node.left
+  right = node.right
+
+  if left && (left.visited == false)
+    found = bt_depth_first_search(left, target)
+    return found if found
+  end
+
+  if right && (right.visited == false)
+    found = bt_depth_first_search(right, target)
+    return found if found
+  end
+  nil
+end
+
+node = createMinimalBST([2,3,4,5,7,8])
+p bt_depth_first_search(node, 100)
+
+def bt_breadth_first_search(node, target)
+  
+end
+
+def linked_list_bst(node)
+
 end

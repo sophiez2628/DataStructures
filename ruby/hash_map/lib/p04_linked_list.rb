@@ -1,4 +1,6 @@
 require 'byebug'
+#doubly linked list
+#why do we need key and val?
 class Link
   attr_accessor :key, :val, :next, :prev
 
@@ -70,7 +72,7 @@ class LinkedList
     while true && include?(key)
       if next_link.key == key
         current_link.next = next_link.next
-        next_link.next.prev = current_link if next_link.next 
+        next_link.next.prev = current_link if next_link.next
         break
       end
       current_link = next_link
