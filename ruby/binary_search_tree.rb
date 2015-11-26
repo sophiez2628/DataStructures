@@ -17,7 +17,7 @@ class Bst
     return node if !node.left && !node.right
     return node if node.right.nil?
     return node if node.left.nil?
-    
+
     if val > node.val
       return node_to_be_added_to(val, node.right)
     else
@@ -32,8 +32,40 @@ class Bst
     else
       correct_node.left = BstNode.new(val)
     end
+    self
+  end
+
+  #depth and breadth first search useful for binary tree, not bst
+  def find(node, val)
+    return node if node.val == val
+    if val > node.val
+      return find(node.right, val)
+    else
+      return find(node.left, val)
+    end
+  end
+
+  def max
+    max_node = root
+    until max_node.right.nil?
+      max_node = max_node.right
+    end
+    max_node.val
+  end
+
+  def min
+    min_node = root
+    until min_node.left.nil?
+      min_node = min_node.left
+    end
+    min_node.val
+  end
+
+  def delete
+    
   end
 end
 
 root = BstNode.new(5)
 bst = Bst.new(root)
+bst.insert(8).insert(3).insert(7).insert(4).insert(1)
