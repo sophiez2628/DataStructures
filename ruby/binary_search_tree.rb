@@ -75,7 +75,7 @@ class Bst
   end
 
   def delete(val)
-    #change the pointer to parent
+    #change the pointer for parent
     node_to_be_deleted = find(root, val)
     parent = node_to_be_deleted.parent
     new_root = min(node_to_be_deleted.right)
@@ -85,6 +85,15 @@ class Bst
     self.root = node_to_be_deleted.val == val ? new_root : root
     self.root.parent = nil
     return self
+  end
+
+  def in_order_traversal(node)
+    return [node.val] if node.right.nil? && node.left.nil?
+    arr = []
+    arr.concat(in_order_traversal(node.left)) if node.left
+    arr.concat([node.val])
+    arr.concat(in_order_traversal(node.right)) if node.right 
+    return arr
   end
 end
 
