@@ -1,9 +1,22 @@
+require 'byebug'
 class BstNode
-  attr_accessor :val, :left, :right
-  def initialize(val)
+  attr_accessor :val, :parent
+  attr_reader :left, :right
+  def initialize(val, parent = nil)
     @val = val
     @left = nil
     @right = nil
+    @parent = parent
+  end
+
+  def left=(node)
+    @left = node
+    node.parent = self
+  end
+
+  def right=(node)
+    @right = node
+    node.parent = self
   end
 end
 
@@ -45,27 +58,36 @@ class Bst
     end
   end
 
-  def max
-    max_node = root
+  def max(node = root)
+    max_node = node
     until max_node.right.nil?
       max_node = max_node.right
     end
-    max_node.val
+    max_node
   end
 
-  def min
-    min_node = root
+  def min(node = root)
+    min_node = node
     until min_node.left.nil?
       min_node = min_node.left
     end
-    min_node.val
+    min_node
   end
 
-  def delete
-    
+  def delete(val)
+    #change the pointer to parent
+    node_to_be_deleted = find(root, val)
+    parent = node_to_be_deleted.parent
+    new_root = min(node_to_be_deleted.right)
+    new_root.parent.left = new_root.right if new_root.right
+    new_root.left = node_to_be_deleted.left if node_to_be_deleted.left
+    new_root.right = node_to_be_deleted.right if node_to_be_deleted.right
+    self.root = node_to_be_deleted.val == val ? new_root : root
+    self.root.parent = nil
+    return self
   end
 end
 
-root = BstNode.new(5)
-bst = Bst.new(root)
-bst.insert(8).insert(3).insert(7).insert(4).insert(1)
+# root = BstNode.new(5)
+# bst = Bst.new(root)
+# bst.insert(8).insert(3).insert(7).insert(4).insert(1)
