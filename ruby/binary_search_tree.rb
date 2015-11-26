@@ -1,5 +1,7 @@
 require 'byebug'
 class BstNode
+  #val, left, right, and parent supports the basic functionalities of a bst
+  #to ensure that the methods always have a time complexity of O(log n), need to keep track of depth
   attr_accessor :val, :parent
   attr_reader :left, :right
   def initialize(val, parent = nil)
@@ -28,12 +30,12 @@ class Bst
 
   def node_to_be_added_to(val, node)
     return node if !node.left && !node.right
-    return node if node.right.nil?
-    return node if node.left.nil?
 
     if val > node.val
+      return node if node.right.nil?
       return node_to_be_added_to(val, node.right)
     else
+      return node if node.left.nil? 
       return node_to_be_added_to(val, node.left)
     end
   end
@@ -92,11 +94,23 @@ class Bst
     arr = []
     arr.concat(in_order_traversal(node.left)) if node.left
     arr.concat([node.val])
-    arr.concat(in_order_traversal(node.right)) if node.right 
+    arr.concat(in_order_traversal(node.right)) if node.right
     return arr
+  end
+
+  def find_height(node)
+    return 0 if node.left.nil? && node.right.nil?
+    right_sub, left_sub = 0, 0
+    right_sub = find_height(node.right) if node.right
+    left_sub = find_height(node.left) if node.left
+    return height = right_sub >= left_sub ? right_sub + 1 : left_sub + 1
   end
 end
 
 # root = BstNode.new(5)
 # bst = Bst.new(root)
 # bst.insert(8).insert(3).insert(7).insert(4).insert(1)
+
+#Practice Problems
+#How do you get the depth of a binary tree?
+  #calculate height of right and left subtree using recursion
