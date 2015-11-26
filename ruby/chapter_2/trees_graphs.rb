@@ -14,6 +14,9 @@ require 'byebug'
 
 #binary tree traversal
   #in-order traversal
+    #return all of the left children
+    #return my value
+    #return all of the right children 
   #post-order traversal
   #pre-order traversal
 
@@ -171,7 +174,7 @@ node = createMinimalBST([2,3,4,5,7,8])
 p bt_depth_first_search(node, 100)
 
 def bt_breadth_first_search(node, target)
-  
+
 end
 
 def linked_list_bst(node)
