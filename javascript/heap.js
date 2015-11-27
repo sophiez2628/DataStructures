@@ -11,11 +11,11 @@ MinHeap.prototype.parentPos = function(childPos) {
 
 MinHeap.prototype.childrenPos = function(parentPos) {
   childrenPos = [];
-  if (parentPos * 2 + 1 < this.arr.length - 1) {
+  if (parentPos * 2 + 1 <= this.arr.length - 1) {
     childrenPos.push(parentPos * 2 + 1);
   }
 
-  if (parentPos * 2 + 2 < this.arr.length - 1) {
+  if (parentPos * 2 + 2 <= this.arr.length - 1) {
     childrenPos.push(parentPos * 2 + 2);
   }
   return childrenPos;
@@ -27,6 +27,12 @@ MinHeap.prototype.insert = function(val) {
     this.heapifyUp(this.arr.length - 1);
   }
 }
+
+MinHeap.prototype.swap = function(pos1, pos2) {
+  var temp = this.arr[pos1];
+  this.arr[pos1] = this.arr[pos2];
+  this.arr[pos2] = temp;
+}
 //heapifyUp is a recursive method
 MinHeap.prototype.heapifyUp = function(childPos) {
   if (childPos == 0) {
@@ -36,9 +42,7 @@ MinHeap.prototype.heapifyUp = function(childPos) {
   if (this.arr[parentPos] <= this.arr[childPos]) {
     return this.arr;
   } else {
-    var temp = this.arr[parentPos];
-    this.arr[parentPos] = this.arr[childPos];
-    this.arr[childPos] = temp;
+    this.swap(parentPos, childPos);
     return this.heapifyUp(parentPos);
   }
 }
@@ -47,14 +51,32 @@ MinHeap.prototype.min = function() {
   return this.arr[0];
 }
 
-MinHeap.prototype.heapifyDown = function(parentPos) {
-  childrenPos = this.childrenPos(parentPos);
+MinHeap.prototype.minChildren = function(childrenPos) {
   if (childrenPos.length == 1) {
-    this.swap(childrenPos, parentPos);
-    this.heapifyDown(childrenPos);
+    return childrenPos[0];
+  }
+  
+  if (this.arr[childrenPos[0]] <= this.arr[childrenPos[1]]) {
+    return childrenPos[0];
   } else {
+    return childrenPos[1];
+  }
+}
+
+MinHeap.prototype.heapifyDown = function(parentPos) {
+  //3 cases: no children, 1 child, 2 children
+  childrenPos = this.childrenPos(parentPos);
+  if (childrenPos.length == 0) {
     return this.arr;
   }
+  minChildPos = this.minChildren(childrenPos);
+  debugger;
+  if (this.arr[minChildPos] < this.arr[parentPos]) {
+    this.swap(minChildPos, parentPos);
+    return this.heapifyDown(minChildPos);
+  }
+
+  return this.arr;
 }
 
 MinHeap.prototype.popMin = function() {
@@ -69,4 +91,5 @@ MinHeap.prototype.popMin = function() {
       this.heapifyDown(0);
     }
   }
+  return this.arr;
 }
