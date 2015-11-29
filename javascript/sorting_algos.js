@@ -45,16 +45,39 @@ Array.prototype.quickSort = function() {
     return sorted.concat(this.slice(pivotIdx + 1).quickSort());
   }
 }
+//why can quick sort be in place? why can merge sort not be in place?
+//merge sort requires O(N) additional space to perform the merge
+Array.prototype.spaceEfficientQuickSort = function(start, len) {
+  if (typeof start === "undefined") {
+    start = 0;
+  }
 
-Array.prototype.spaceEfficientQuickSort = function() {
-  
+  if (typeof len === "undefined") {
+    len = this.length;
+  }
+
+  if (len < 2) {
+    return this;
+  } else {
+    var pivotIdx = this.partition(start, len);
+    this.spaceEfficientQuickSort(0, pivotIdx);
+    this.spaceEfficientQuickSort(pivotIdx + 1, this.length - 1 - pivotIdx);
+  }
+  return this;
 }
 
 // [1,2,3].slice(0,0) => []
 
-Array.prototype.partition = function() {
-  var pivotIdx = 0;
-  for(var i = 1; i < this.length; i++) {
+Array.prototype.partition = function(pivotIdx, len) {
+  if (typeof pivotIdx === "undefined") {
+    pivotIdx = 0;
+  }
+
+  if (typeof len === "undefined") {
+    len = this.length;
+  }
+  //pivotIdx is non-zero - how to handle this case
+  for(var i = pivotIdx + 1; i < pivotIdx + len; i++) {
     if (this[i] < this[pivotIdx]) {
       if (i == pivotIdx + 1) {
         this.swap(i, pivotIdx);
