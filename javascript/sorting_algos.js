@@ -40,6 +40,7 @@ Array.prototype.quickSort = function() {
     return this;
   } else {
     this.swap(0, Math.floor(Math.random() * (this.length - 1)));
+    //returns the sorted pivot index
     var pivotIdx = this.partition();
     sorted = this.slice(0,pivotIdx).quickSort().concat([this[pivotIdx]]);
     return sorted.concat(this.slice(pivotIdx + 1).quickSort());
@@ -59,9 +60,12 @@ Array.prototype.spaceEfficientQuickSort = function(start, len) {
   if (len < 2) {
     return this;
   } else {
+    this.swap(start, Math.floor(Math.random() * (len - 1) + start));
     var pivotIdx = this.partition(start, len);
     this.spaceEfficientQuickSort(0, pivotIdx);
-    this.spaceEfficientQuickSort(pivotIdx + 1, this.length - 1 - pivotIdx);
+    if (len - 1 - pivotIdx > 0) {
+      this.spaceEfficientQuickSort(pivotIdx + 1, len - 1 - pivotIdx);
+    }
   }
   return this;
 }
@@ -97,3 +101,5 @@ Array.prototype.swap = function(pos1, pos2) {
   this[pos1] = this[pos2];
   this[pos2] = temp;
 }
+
+// [4,10,12,1,0].spaceEfficientQuickSort()
