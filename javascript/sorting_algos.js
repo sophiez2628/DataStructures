@@ -46,6 +46,12 @@ Array.prototype.quickSort = function() {
   }
 }
 
+Array.prototype.spaceEfficientQuickSort = function() {
+  
+}
+
+// [1,2,3].slice(0,0) => []
+
 Array.prototype.partition = function() {
   var pivotIdx = 0;
   for(var i = 1; i < this.length; i++) {
