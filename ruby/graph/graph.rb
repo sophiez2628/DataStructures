@@ -1,10 +1,11 @@
 #write some of the graph algorithms
 #directed graph
 class Edge
-  def initialize(from, to)
-    @from, @to = from, to
+  def initialize(from, to, weight)
+    @from, @to, @weight = from, to, weight
     @from.out_edges << self
     @to.in_edges << self
+
   end
 end
 
@@ -76,4 +77,44 @@ end
 #iterate through every vertex - mark the number of in edges going into the vertex
 
 #move into queue or order
-#dependency list is unsolvable if a cycle 
+#dependency list is unsolvable if a cycle
+
+
+#how to perform graph search with edge weights?
+  #dijkstra's algorithm - greedy algorithm
+  #make greedy choices one at a time, making greedy chocies one at a time, eventually reach a correct solution
+#what if there are negative edge weights?
+  #in a distance graph, does not make sense, but in a business transaction graph, it does make sense!
+
+def dijkstra(source, destination = nil)
+  #nodes that i have been to, do not want to look back inside myself
+  visited = {}
+
+  #vertices directly reachable from supernode
+  frontier = {source => 0}
+
+  #O(v)
+  until frontier.empty?
+    #O(v)
+    vertex, cost = frontier.min_by(&:last)
+
+    return cost if vertex.val == destination
+    #eating node up
+    frontier.delete(vertex)
+    next if visited[vertex]
+    vertex.out_edges.each do |edge|
+      vertex2 = edge.to
+      cost2 = edge.weight
+      new_cost = cost + cost2
+      if frontier[vertex2]
+        frontier[vertex2] = min(frontier[vertex2], new_cost)
+      else
+        frontier[vertex2] = new_cost
+      end
+    end
+    visited[vertex] = cost
+  end
+end
+
+#what is the time and space complexity?
+  #time complexity is O(v^2)
