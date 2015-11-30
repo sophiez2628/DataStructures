@@ -23,10 +23,14 @@ function min (num1, num2) {
 
 Object.prototype.minCost = function() {
   var keys = Object.getOwnPropertyNames(this);
-  var vertex = keys[0];
+  var vertex_key = keys[0];
+  var vertex = this[vertex_key][1];
+  debugger;
   for(var i = 1; i < keys.length; i++) {
-    if (this[keys[i]][0] < this[vertex][0]) {
-      vertex = keys[i][1];
+    debugger;
+    if (this[keys[i]][0] < this[vertex_key][0]) {
+      debugger;
+      vertex = this[keys[i]][1];
     }
   }
   return vertex;
@@ -40,23 +44,27 @@ var dijkstra = function(source_vertex, destination) {
   while (Object.getOwnPropertyNames(frontier).length > 0) {
     //get vertex with lowest cost
     var vertex = frontier.minCost();
+    var vertex_val = vertex.val;
+    debugger;
     var cost = frontier[vertex.val][0];
 
-    delete frontier.vertex.val;
-    debugger;
-    if (vertex.val === destination) {
-      return cost;
-    } else {
-      vertex.out_edges.forEach(function(edge) {
-        var new_cost = cost + edge.weight;
-        if (frontier[edge.to.val]) {
-          frontier[edge.to.val] = [min(frontier[edge.to], new_cost), edge.to];
-        } else {
-          frontier[edge.to] = [new_cost, edge.to];
-        }
-      }.bind(this));
+    delete frontier[vertex_val];
+    if (visited[vertex_val] === undefined) {
+      if (vertex.val === destination) {
+        return cost;
+      } else {
+        vertex.out_edges.forEach(function(edge) {
+          var new_cost = cost + edge.weight;
+          if (frontier[edge.to.val]) {
+            frontier[edge.to.val] = [min(frontier[edge.to.val][0], new_cost), edge.to];
+            debugger;
+          } else {
+            frontier[edge.to.val] = [new_cost, edge.to];
+          }
+        }.bind(this));
+      }
     }
-    visited.(vertex.val) = [cost, vertex];
+    visited[vertex_val] = [cost, vertex];
   }
   return visited;
 }
