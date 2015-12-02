@@ -68,3 +68,15 @@ function tailRecFac(n, current) {
   //and are easier to optimize
 
 //max_unique_psub
+
+function maxUniquePsub(str) {
+  var chars = str.split("");
+  var max = chars[str.length - 1];
+  for(var i = str.length - 2; i >= 0; i--) {
+    //begins from the end so that everything remains in order
+    if (chars[i] > max) {
+      max = chars[i] + max;
+    }
+  }
+  return max;
+}

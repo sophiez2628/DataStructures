@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="star.css" type="text/css">
+    <script src="jquery.js">
+
+    </script>
+    <script type="text/javascript">
+      $(function() {
+        $('ul').on('click', 'li', function(e) {
+          e.preventDefault();
+          var $e = $(e.currentTarget);
+          var index = $e.data().id;
+            $('li').each(function(idx, li) {
+              if ($(li).data().id <= index) {
+                $(li).removeClass('star-empty').addClass('star-filled');
+              } else {
+                $(li).removeClass('star-filled').addClass('star-empty');
+              }
+            });
+          });
+        })
+    </script>
+  </head>
+
+  <body>
+    <ul>
+      <li class="star-empty" data-id=1></li>
+      <li class="star-empty" data-id=2></li>
+      <li class="star-empty" data-id=3></li>
+      <li class="star-empty" data-id=4></li>
+      <li class="star-empty" data-id=5></li>
+    </ul>
+  </body>
+</html>
