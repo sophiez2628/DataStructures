@@ -4,3 +4,5 @@
   #uses greedy method
   #uses priority queue to store unvisited vertices by distance from s
   #does not work with negative weights
+
+#for implementation, see graph.rb

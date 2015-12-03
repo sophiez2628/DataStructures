@@ -133,3 +133,11 @@ p dijkstra(a,d)
 
 #what is the time and space complexity?
   #time complexity is O(v^2)
+
+#how to improve the time complexity of this current algorithm?
+  #use a heap to find the min. this heap should hold key value pairs using a two element array
+  #cannot perform binary search on a heap
+  #why are heaps more cache efficient than binary search trees?
+  #keep a hash map alongside min heap - hash map good for finding stuff!
+
+  #in the readings, referred to as a priority queue map
