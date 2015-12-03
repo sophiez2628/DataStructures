@@ -1,21 +1,35 @@
 #write some of the graph algorithms
 #directed graph
 class Edge
+  attr_reader :from, :to, :weight
   def initialize(from, to, weight)
     @from, @to, @weight = from, to, weight
     @from.out_edges << self
     @to.in_edges << self
-
   end
 end
 
 class Vertex
+  attr_reader :val, :out_edges, :in_edges
   def initialize(val)
     @val = val
     @out_edges = []
     @in_edges = []
   end
 end
+
+a = Vertex.new("A")
+b = Vertex.new("B")
+c = Vertex.new("C")
+d = Vertex.new("D")
+e = Vertex.new("E")
+
+p_ae = Edge.new(a, e, 1)
+p_ab = Edge.new(a, b, 1)
+p_ac = Edge.new(a, c, 2)
+p_eb = Edge.new(e, b, 5)
+p_bd = Edge.new(b, d, 4)
+p_cd = Edge.new(c, d, 1)
 
 #DAG - directed acyclic graph (most common type of graph)
 #many algorithms only work on DAG
@@ -52,12 +66,12 @@ end
 
 #figure out demographics of customers, and see what the clusters are
 
-connected_components = Set.new
-vertices.each do |vertex|
-  if !explored[vertex]
-    connected_components << bfs(vertex)
-  end
-end
+# connected_components = Set.new
+# vertices.each do |vertex|
+#   if !explored[vertex]
+#     connected_components << bfs(vertex)
+#   end
+# end
 
 #bfs runs in O(v + e) - every graph has two inputs, i
 #mportant to express time complexity in terms of these two inputs
@@ -86,28 +100,26 @@ end
 #what if there are negative edge weights?
   #in a distance graph, does not make sense, but in a business transaction graph, it does make sense!
 
-def dijkstra(source, destination = nil)
-  #nodes that i have been to, do not want to look back inside myself
+#main source of the problem is that the direct path may not be the shortest path
+def dijkstra(source, destination=nil)
   visited = {}
-
-  #vertices directly reachable from supernode
+  #will contain vertices directly reachable from supernode, also contains the cost for going to a node
   frontier = {source => 0}
 
-  #O(v)
   until frontier.empty?
     #O(v)
+    #why get the min of the hash map?
     vertex, cost = frontier.min_by(&:last)
-
-    return cost if vertex.val == destination
-    #eating node up
+    #O(v)
+    return cost if vertex == destination
     frontier.delete(vertex)
     next if visited[vertex]
     vertex.out_edges.each do |edge|
       vertex2 = edge.to
       cost2 = edge.weight
-      new_cost = cost + cost2
+      new_cost = cost2 + cost
       if frontier[vertex2]
-        frontier[vertex2] = min(frontier[vertex2], new_cost)
+        frontier[vertex2] = [new_cost, frontier[vertex2]].min
       else
         frontier[vertex2] = new_cost
       end
@@ -115,6 +127,9 @@ def dijkstra(source, destination = nil)
     visited[vertex] = cost
   end
 end
+
+p dijkstra(a,b)
+p dijkstra(a,d)
 
 #what is the time and space complexity?
   #time complexity is O(v^2)
