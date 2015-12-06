@@ -22,3 +22,9 @@ article {
 article.active {
   display: block;
 }
+
+.transitioning {
+  display: block;
+  opacity: 0;
+  transition: opacity 300ms linear;
+}
