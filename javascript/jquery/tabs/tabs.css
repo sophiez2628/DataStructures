@@ -11,12 +11,58 @@ h1, h2, p, strong, em, a {
   color: inherit;
   background: transparent;
 }
+/*margins push other objects away*/
+
+/*why is main used? easily manipulate the content*/
+
+body {
+  background: grey;
+}
+
+section {
+  background: white;
+}
+
+h1 {
+  font-size: 60px;
+  text-align: center;
+  font-weight: bold;
+}
+
+/*what does changing a to display block do?*/
+.tabs > li > a {
+  display: block;
+  padding: 10px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+main {
+  margin: 20px auto;
+  width: 500px;
+}
+/*width only refers to content. that's why margin: 20px auto centers it*/
+
+ul {
+  list-style-type: none;
+  padding-left: 0px;
+  margin-bottom: 0px;
+}
+
+ul > li {
+  float: left;
+  padding-right: 20px;
+}
+
 .tabs a.active {
   font-weight: bold;
+  background: white;
 }
 
 article {
   display: none;
+  background: white;
+  padding: 20px;
 }
 
 article.active {
@@ -24,7 +70,14 @@ article.active {
 }
 
 .transitioning {
+  background: white;
   display: block;
   opacity: 0;
   transition: opacity 300ms linear;
+}
+
+.group:after {
+  content: "";
+  display: block;
+  clear: both;
 }
