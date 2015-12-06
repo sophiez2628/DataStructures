@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <script src="jquery.js"></script>
+    <script src="tabs.js"></script>
+    <link rel="stylesheet" href="tabs.css" type="text/css">
+    <title>Tabs</title>
+  </head>
+
+  <body>
+    <script type="text/javascript">
+      $(function() {
+        $('.tabs').tabs();
+      })
+    </script>
+
+    <ul class="tabs" data-content-tabs=".content-tabs">
+      <li><a href="#golden-retriever" class="active">Golden Retriever</a></li>
+      <li><a href="#dalmatian">Dalmatian</a></li>
+      <li><a href="#welsh-corgi">Welsh Corgi</a></li>
+    </ul>
+
+    <section class="content-tabs">
+      <article id="golden-retriever" class="active">
+        <p>
+          The Golden Retriever is a large-sized breed of dog bred as gun dogs to
+          retrieve shot waterfowl such as ducks and upland game birds during
+          hunting and shooting parties, and were named 'retriever' because of
+          their ability to retrieve shot game undamaged. Golden Retrievers have
+          an instinctive love of water, and are easy to train to basic or advanced
+          obedience standards.
+        </p>
+      </article>
+
+      <article id="dalmatian">
+        <p>
+          The Dalmatian is a breed of large dog, noted for its unique black
+          or liver spotted coat and mainly used as a carriage dog in its early days.
+          Its roots trace back to Croatia and its historical region of Dalmatia.
+          Today, it is a popular family pet, and many dog enthusiasts enter Dalmatians
+          into kennel club competitions.
+        </p>
+      </article>
+
+      <article id="welsh-corgi">
+        <p>
+          The Welsh corgi is a small type of herding dog that originated in Wales.
+          Two distinct breeds are recognized: the Pembroke Welsh corgi and the Cardigan
+          Welsh corgi, with the Pembroke being the more common.
+        </p>
+      </article>
+    </section>
+
+  </body>
+</html>

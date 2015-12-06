@@ -21,6 +21,7 @@ function min (num1, num2) {
   }
 }
 
+//Object.getOwnPropertyNames(obj) - gets passed in an obj and returns the names of object keys 
 Object.prototype.minCost = function() {
   var keys = Object.getOwnPropertyNames(this);
   var vertex_key = keys[0];
