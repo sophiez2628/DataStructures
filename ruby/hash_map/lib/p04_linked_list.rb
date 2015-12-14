@@ -1,3 +1,5 @@
+# why do we need key for linked list?
+
 require 'byebug'
 #doubly linked list
 #why do we need key and val?
