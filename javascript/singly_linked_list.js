@@ -1,3 +1,4 @@
+// head is a dummy node 
 var Link = function(val) {
   this.val = val;
   this.nxt = undefined;
