@@ -61,3 +61,5 @@ function foo() {
 //what is IIFE? immediately invoked function expressions - good for private variables
   //allows us to export objects to the browser while protecting the global namespace from pollution
   //this allow us to mix in libraries with less fear and make code safer for other programmers to include
+
+//understanding asynchronous javascript

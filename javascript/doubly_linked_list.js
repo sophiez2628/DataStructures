@@ -74,17 +74,54 @@ var bfs = function(graph, src, target) {
   q.enqueue(src);
   while (q.empty() === false) {
     var node = q.dequeue();
-    
+    console.log(node);
     if (node.val === target) {
       return node.val;
     };
 
     for(var i = 0; i < graph[src].length; i++) {
-      if (!visited[src] && graph[src][i] === 1) {
+      if (visited[i] === undefined && graph[node.val][i] === 1) {
+        debugger;
         q.enqueue(i);
       }
     }
-    visited[src] = true;
+    visited[node.val] = true;
   }
   return "Target not found";
+}
+
+var dfs = function(graph, src, visited, order) {
+  if (typeof visited === "undefined") {
+    var visited = {};
+  }
+
+  if (typeof order === "undefined") {
+    var order = [];
+  }
+  console.log(src);
+  visited[src] = true;
+  for(var i = 0; i < graph[src].length; i++) {
+    if(graph[src][i] === 1 && !visited[i]) {
+      dfs(graph, i, visited, order);
+    }
+  }
+  order.unshift(src);
+  return order;
+}
+
+// topological sort using dfs
+var graph = [
+  [0,0,1,1,1,0,0,0],
+  [0,0,1,0,0,1,1,0],
+  [0,0,0,0,0,0,0,0],
+  [0,0,0,0,0,1,0,1],
+  [0,0,0,0,0,0,0,1],
+  [0,0,0,0,0,0,1,0],
+  [0,0,0,0,0,0,0,0],
+  [0,0,0,0,0,0,0,0],
+]
+
+//how to keep track of incoming and outcoming edges for linear time complexity?
+var toposort = function(graph) {
+  return dfs(graph, 0);
 }
