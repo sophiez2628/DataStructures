@@ -51,17 +51,45 @@ function minTree (array, tree) {
 }
 
 //implement a func to check if bt is balanced
+	//height vs depth of a tree?
+	//how to find the height of a tree? find height of left and right subtree
+	//counting the num of edges
 
+	//how to find height of tree?
+	//what are the sub-problems that need to be solved?
+function findHeight (node) {
+	var left = 0;
+	var right = 0;
+
+	if (node.left) {
+		left = 1 + findHeight(node.left);
+	}
+
+	if (node.right) {
+		right = 1 + findHeight(node.right);
+	}
+
+	if (left >= right) {
+		return left;
+	} else {
+		return right;
+	}
+}
+
+function checkBal (node) {
+
+}
 
 //validate bst
 
-	//height vs depth of a tree?
+
 
 var bst = new BST(40);
 bst.insert(25);
 bst.insert(78);
 bst.insert(10);
 bst.insert(32);
+bst.insert(1);
 
 //pre order traversal
 	//each node is processed before any nodes in its subtrees
