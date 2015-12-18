@@ -58,6 +58,10 @@ function minTree (array, tree) {
 	//how to find height of tree?
 	//what are the sub-problems that need to be solved?
 function findHeight (node) {
+	if (typeof node === "undefined") {
+		return 0;
+	}
+
 	var left = 0;
 	var right = 0;
 
@@ -76,20 +80,44 @@ function findHeight (node) {
 	}
 }
 
-function checkBal (node) {
+//use post order?
+//returns from recursive functions
+//useful: Math.min(num1, num2) & Math.max(num1, num2)
+
+//works unless leaf node
+function minDepth(node) {
+	if (typeof node === "undefined") {
+		return -1;
+	}
+
+	return Math.min(1 + minDepth(node.left), 1 + minDepth(node.right));
 
 }
 
+function maxDepth(node) {
+	if (typeof node === "undefined") {
+		return -1;
+	}
+
+	return Math.max(1 + maxDepth(node.left), 1 + maxDepth(node.right));
+
+}
+
+function isBalanced(node) {
+	if (maxDepth(node) - minDepth(node) > 1) {
+		return false;
+	} else {
+		return true;
+	}
+}
+
 //validate bst
-
-
-
 var bst = new BST(40);
 bst.insert(25);
 bst.insert(78);
 bst.insert(10);
 bst.insert(32);
-bst.insert(1);
+// bst.insert(1);
 
 //pre order traversal
 	//each node is processed before any nodes in its subtrees
@@ -119,3 +147,14 @@ function postOrder (node) {
 }
 
 //in order traversal
+function inOrder (node) {
+	if (node.left) {
+		inOrder(node.left);
+	}
+
+	console.log(node);
+
+	if (node.right) {
+		inOrder(node.right);
+	}
+}
