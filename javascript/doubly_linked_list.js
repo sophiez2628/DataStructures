@@ -90,6 +90,36 @@ var bfs = function(graph, src, target) {
   return "Target not found";
 }
 
+var graph = [false, [3,5], [4], [1,5], [2], [1,3,7,9], [8,10], [5], [6,10], [5], [6,8]];
+
+var bfsCC = function(graph, src, visited) {
+  var component = [];
+  var q = new Queue();
+  q.enqueue(src);
+  while (q.empty() === false) {
+    var node = q.dequeue();
+    component.push(node.val);
+    for(var i = 0; i < graph[node.val].length; i++) {
+      if (visited[i] === undefined && graph[node.val][i]) {
+        q.enqueue(graph[node.val][i]);
+      }
+    }
+    visited[node.val] = true;
+  }
+  return component;
+}
+
+var connectedComponents = function(graph) {
+  var visited = {};
+  var components = [];
+  for(var i = 0; i < graph.length; i++) {
+    if (Array.isArray(graph[i]) && !visited[i]) {
+      components.push(bfsCC(graph, i, visited));
+    }
+  }
+  return components;
+}
+
 var dfs = function(graph, src, visited, order) {
   if (typeof visited === "undefined") {
     var visited = {};
