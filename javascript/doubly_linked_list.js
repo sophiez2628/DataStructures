@@ -95,16 +95,20 @@ var graph = [false, [3,5], [4], [1,5], [2], [1,3,7,9], [8,10], [5], [6,10], [5],
 var bfsCC = function(graph, src, visited) {
   var component = [];
   var q = new Queue();
+  debugger;
   q.enqueue(src);
+  visited[src] = true;
+  component.push(src);
   while (q.empty() === false) {
     var node = q.dequeue();
-    component.push(node.val);
+    //add only unexplored vertices to queue
     for(var i = 0; i < graph[node.val].length; i++) {
-      if (visited[i] === undefined && graph[node.val][i]) {
+      if (visited[graph[node.val][i]] === undefined) {
         q.enqueue(graph[node.val][i]);
+        visited[graph[node.val][i]] = true;
+        component.push(graph[node.val][i]);
       }
     }
-    visited[node.val] = true;
   }
   return component;
 }
