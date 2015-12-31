@@ -1,3 +1,40 @@
+//check if num is prime
+//sieve of eratosthenes
+
+var eratosthenes = function(n) {
+  var array = [], upperLimit = Math.sqrt(n), output = [];
+
+  for(var i = 0; i <= n; i++) {
+    array.push(true);
+  }
+
+  for(var i = 2; i <= upperLimit; i++) {
+    if (array[i]) {
+      for(var j = i + i; j <= n; j += i) {
+        array[j] = false;
+      }
+    }
+  }
+
+  for(var i = 2; i <= n; i++) {
+    if(array[i]) {
+      output.push(i);
+    }
+  }
+
+  return output;
+}
+
+var checkPrime = function(n) {
+  var primes = eratosthenes(n);
+  for(var i = 0; i < primes.length; i++) {
+    if (primes[i] === n) {
+      return true;
+    } else if (n % (primes[i]) === 0) {
+      return false;
+    }
+  }
+}
 //linked lists
 function DoublelyLLNode(val) {
   this.val = val;
@@ -67,6 +104,7 @@ LinkedList.prototype.findValue = function(key) {
     }
     current = current.nxt;
   }
+  return undefined;
 }
 
 LinkedList.prototype.last = function() {
@@ -151,5 +189,9 @@ HashTable.prototype.insert = function(key, val) {
 
 HashTable.prototype.find = function(key) {
   var idx = this.findIndex(key);
-  return this.store[idx].findValue(key);
+  if (this.store[idx]) {
+    return this.store[idx].findValue(key);
+  } else {
+    return undefined;
+  }
 }
