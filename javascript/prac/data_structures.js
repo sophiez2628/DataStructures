@@ -1,3 +1,24 @@
+/*
+given an array of distinct integer values,
+count the number of pairs of integers that have diff k.
+*/
+
+var countPairs = function(k, arr) {
+  var hash = new HashTable();
+  for(var i = 0; i < arr.length; i++) {
+    hash.insert(arr[i], true);
+  }
+
+  var pairs = [];
+  arr.forEach(function(num) {
+    var other = num + 2;
+    if (hash.find(other)) {
+      pairs.push([num, other]);
+    }
+  })
+  return pairs;
+}
+
 //check if num is prime
 //sieve of eratosthenes
 
