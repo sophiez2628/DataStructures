@@ -1,4 +1,25 @@
 /*
+matrix multiplication
+  start by thinking about the last step,
+  come up with equation to describe recursive substructure,
+  figure out order to solve
+*/
+
+var tripleStep = function(n) {
+  var hash = new HashTable();
+  for(var i = 0; i <= n; i++) {
+    if (i < 2) {
+      hash.insert(i, 1);
+    } else if (i < 3) {
+      hash.insert(i, 2);
+    } else {
+      var count = hash.find(i - 1) + hash.find(i - 2) + hash.find(i - 3);
+      hash.insert(i, count);
+    }
+  }
+  return hash.find(n);
+}
+/*
 how many ways are there to climb n steps if you take either 1 or 2 steps at a time?
 */
 
@@ -45,4 +66,27 @@ var stairsBottomUp = function(n) {
     }
   }
   return memo.find(n);
+}
+
+//log cutter
+//how to figure the pieces cut?
+var bestCut = function(n, arr) {
+  var memo = new HashTable();
+  var choice = [0];
+  for(var i = 0; i <= n; i++) {
+    if (i === 0) {
+      memo.insert(i, 0);
+    } else {
+      var max = 0;
+      for(var j = 1; j <= i; j++) {
+        var newMax = arr[j - 1] + memo.find(i - j);
+        if (newMax > max) {
+          max = newMax;
+          choice[i] = j;
+        }
+      }
+      memo.insert(i, max);
+    }
+  }
+  return choice;
 }

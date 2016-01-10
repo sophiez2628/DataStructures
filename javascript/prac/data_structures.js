@@ -1,3 +1,460 @@
+//max subarray in linear time
+var maxSubArrayLinearTime = function(arr) {
+	var startIdx = 0;
+	var endIdx = 0;
+	var currentMax = arr[startIdx];
+	var runningTotal = arr[startIdx]
+	for(var i = 1; i < arr.length; i++) {
+		if (arr[i] > currentMax) {
+			startIdx = i;
+			endIdx = i;
+			currentMax = arr[i];
+			runningTotal = arr[i];
+		} else {
+			runningTotal += arr[i];
+			if (runningTotal > currentMax) {
+				currentMax = runningTotal;
+				endIdx = i;
+			}
+		}
+	}
+	return arr.slice(startIdx, endIdx + 1);
+}
+
+
+//max subarray -> example of divide and conquer method
+var findMidpointMaxSub = function(arr, low, mid, high) {
+	//low -> mid - 1
+	//mid -> high
+
+	var leftSum = null;
+	var leftIdx = null;
+	var sum = 0;
+	for(var i = mid - 1; i >= low; i--) {
+		sum += arr[i]
+		if (sum > leftSum || !leftSum) {
+			leftSum = sum;
+			leftIdx = i;
+		}
+	}
+
+	var rightSum = null;
+	var rightIdx = null;
+	sum = 0
+	for(var i = mid; i <= high; i++) {
+		sum += arr[i];
+		if (sum > rightSum || !rightSum) {
+			rightSum = sum;
+			rightIdx = i;
+		}
+	}
+	//return low, high, sum
+	return [leftIdx, rightIdx, leftSum + rightSum]
+}
+
+var findMaxSub = function(arr, low, high) {
+	if (high - low === 0) {
+		return [low, high, arr[low]];
+	} else {
+		var mid = Math.floor((high + low + 1) / 2);
+		var left = findMaxSub(arr, low, mid - 1);
+		var right = findMaxSub(arr, mid, high);
+		var midSub = findMidpointMaxSub(arr, low, mid, high);
+
+		if (left[2] > right[2] && left[2] > midSub[2]) {
+			return left;
+		} else if (right[2] > midSub[2] && right[2] > left[2]) {
+			return right;
+		} else {
+			return midSub;
+		}
+	}
+}
+
+Array.prototype.insertionSort = function() {
+	this.forEach(function(num, index) {
+		for(var i = index - 1; i >= 0; i--) {
+			if (num < this[i]) {
+				//swap
+				this[i + 1] = this[i];
+				this[i] = num;
+			}
+		}
+	}.bind(this))
+	return this;
+}
+
+
+//permutationWithoutDups
+String.prototype.splice = function(idx, insert) {
+	var arrStr = this.split("");
+	arrStr.splice(idx, 0, insert);
+	return arrStr.join("");
+}
+
+var permutationWithoutDups = function(str, hash) {
+	if (typeof hash === "undefined") {
+		hash = new HashTable( );
+	}
+
+	if (str.length <= 1) {
+		return [str];
+	} else {
+		var last = str[str.length - 1];
+		var permutations = permutationWithoutDups(str.slice(0, str.length - 1), hash)
+		var newPermutations = [];
+		permutations.forEach(function(permutation){
+			for(var i = 0; i <= permutation.length; i++) {
+				var newP = permutation.splice(i, last);
+				if (!hash.find(newP)) {
+					newPermutations.push(newP);
+					hash.insert(newP, true)
+				}
+			}
+		})
+		return newPermutations;
+	}
+}
+
+
+//recursive multiply
+var recursiveMultiply = function(num1, num2) {
+	if (num1 === 0 || num2 === 0) {
+		return 0;
+	}
+
+	if (num1 === 1) {
+		return num2;
+	} else if (num2 === 1) {
+		return num1;
+	}
+
+
+	if (num1 > num2) {
+			return num1 + recursiveMultiply(num1, num2 - 1);
+	} else {
+		return num2 + recursiveMultiply(num2, num1 - 1);
+	}
+}
+
+
+//power set
+var subsets = function(arr) {
+	if (arr.length === 0) {
+		return [[ ]];
+	} else {
+		var num = arr.pop();
+		var subs = subsets(arr);
+		var newSubs = []
+		for (var i = 0; i < subs.length; i++) {
+			var copy = subs[i].slice(0);
+			copy.push(num);
+			newSubs.push(copy);
+		}
+		return subs.concat(newSubs);
+	}
+}
+
+
+//magic index
+
+var magicIndex = function( arr, start, end) {
+	if (typeof start === "undefined" && typeof end === "undefined") {
+		start = 0;
+		end = arr.length - 1;
+}
+
+if (arr[start] === undefined || arr[end] === undefined) {
+	return false;
+} else if (end - start == 0) {
+return	arr[start] === start ? start : false;
+}
+
+
+var middle = Math.floor((end + start + 1)/ 2 );
+
+if (middle === arr[middle]) {
+	return middle;
+} else if (middle > arr[middle]) {
+	//look at upper half of arr
+	return magicIndex(arr, middle + 1, end);
+} else {
+	//look at lower half
+	return magicIndex(arr, start, middle - 1);
+}
+}
+
+//robot
+var robotGrid = [
+  [true, false, true],
+  [true, true, true],
+  [true, false, true],
+  [false, false, true]
+];
+
+var robotGrid2 = [
+  [true, false, true],
+  [false, true, true],
+  [true, false, true],
+  [false, false, true]
+];
+
+var robotGrid3 = [
+  [true, true, true, true, true],
+  [false, true, false, true, true],
+  [true, true, true, false, false],
+  [false, false, true, true, true],
+  [true, false, false, true, false],
+  [true, true, false, true, true]
+]
+
+var reachStart = function(end) {
+  if (end[0] == 0 && end[1] == 0) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+var leftStep = function(end) {
+  if (end[1] - 1 < 0) {
+    return false;
+  } else {
+    var newEnd = [end[0], end[1] - 1];
+    return newEnd;
+  }
+}
+
+var upStep = function(end) {
+  if (end[0] - 1 < 0) {
+    return false;
+  } else {
+    var newEnd = [end[0] - 1, end[1]];
+    return newEnd;
+  }
+}
+
+var isTherePathForRobot = function(grid, end) {
+  var start = [0,0];
+  if (typeof end === "undefined") {
+    end = [grid.length - 1, grid[0].length - 1];
+  }
+
+  var step = reachStart(end);
+  if (step) {
+    return true;
+  }
+
+  var left = leftStep(end);
+  if (left && grid[left[0]][left[1]]) {
+    if (findPathForRobot(grid, left)) {
+      return true;
+    }
+  }
+
+  var up = upStep(end);
+  if (up && grid[up[0]][up[1]]) {
+    if (findPathForRobot(grid, up)) {
+      return true;
+    }
+  }
+
+  return false;
+
+};
+
+var findPathForRobot = function(grid, end) {
+  var start = [0,0];
+  if (typeof end === "undefined") {
+    end = [grid.length - 1, grid[0].length - 1];
+  }
+  var path = [];
+
+  var step = reachStart(end);
+  if (step) {
+    return path;
+  }
+
+  var left = leftStep(end);
+  if (left && grid[left[0]][left[1]]) {
+    var value = findPathForRobot(grid, left)
+    if (value) {
+      value.push(left);
+      return value;
+    }
+  }
+
+  var up = upStep(end);
+  if (up && grid[up[0]][up[1]]) {
+    var value = findPathForRobot(grid, up);
+    if (value) {
+      value.push(up);
+      return value;
+    }
+  }
+
+  return false;
+
+};
+
+//how to stop prematurely
+[1,2,3].some(function(num) {
+  console.log(num);
+  if (num == 2) {
+    return num;
+  }
+})
+
+//how to get myEach to return early
+
+Array.prototype.myEach = function(callback) {
+  for(var i = 0; i < this.length; i++) {
+    if (callback(this[i])) {
+      return;
+    }
+  }
+}
+
+/*
+palindrome permutation
+*/
+
+var palindromePermutation = function(str) {
+  var sorted = str.split(" ").join("").split("").sort();
+  var odd;
+  if (sorted.length % 2 === 0) {
+    odd = false;
+  } else {
+    odd = true;
+  }
+
+  var oddLetter = 0;
+  var start = 0;
+
+  for(var i = 0; i < sorted.length - 2; i++) {
+    if (start === i) {
+      if(sorted[i] === sorted[i + 1]) {
+        start = i + 2;
+      } else {
+        if (odd && oddLetter == 0) {
+          oddLetter = 1;
+        } else {
+          return false;
+        }
+      }
+    }
+  }
+
+  return true;
+}
+
+/*
+check permutation
+*/
+var checkPermutation = function(str1, str2) {
+  var sorted1 = str1.split("").sort().join("");
+  var sorted2 = str2.split("").sort().join("");
+  if (sorted1 === sorted2) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+/*
+  is unique
+*/
+
+var isUnique = function(str) {
+  for(var i = 0; i < str.length - 2; i++) {
+    for(var j = 1; j + i < str.length; j++) {
+      if(str[i] == str[j + i]) {
+        return false;
+      }
+    }
+  }
+  return true;
+}
+
+/*
+find permutations of substr in str
+*/
+var populateHashTable = function(substr, hash) {
+  for(var i = 0; i < substr.length; i++) {
+    var idx = substr.charCodeAt(i) - 97;
+    var found = hash.find(idx);
+    if (found) {
+      hash.insert(idx, found + 1);
+    } else {
+      hash.insert(idx, 1);
+    }
+  }
+
+  return hash;
+}
+
+var compare = function(arr, hash) {
+  for(var i = 0; i < arr.length; i++) {
+    var value = arr[i];
+    if (value && hash.find(i) !== value) {
+      return false;
+    }
+  }
+  return true;
+}
+
+var locations = function(substr, str) {
+  var hash = new HashTable();
+  var indices = [];
+
+  hash = populateHashTable(substr, hash);
+
+  for(var i = 0; i < str.length - substr.length; i++) {
+    var arr = [];
+    for(var j = 0; j < substr.length; j++) {
+      var idx = str[j + i].charCodeAt(0) - 97;
+      var found = hash.find(idx);
+      if (found) {
+        if (arr[idx]) {
+          arr[idx] += 1;
+        } else {
+          arr[idx] = 1;
+        }
+      } else {
+        break;
+      }
+    }
+
+    if (compare(arr, hash)) {
+      indices.push(i);
+    }
+  }
+
+  return indices;
+}
+
+/*
+print all positive integer solutions
+*/
+var intSolutions = function() {
+  var pairs = [];
+  for(var i = 1; i <= 10; i++) {
+    for(var j = 1; j <= 10; j++) {
+      var result = Math.pow(i, 3) + Math.pow(j, 3);
+      if (pairs[result] === undefined) {
+        pairs[result] = [[i, j]];
+      } else {
+        pairs[result].push([i,j]);
+      }
+    }
+  }
+
+  for(var i = 0; i < pairs.length; i++) {
+    if(pairs[i] && pairs[i].length == 2) {
+      console.log(pairs[i]);
+    }
+  }
+}
 /*
 given an array of distinct integer values,
 count the number of pairs of integers that have diff k.
@@ -111,9 +568,9 @@ function LinkedList() {
   this.head = new Node();
 }
 
-LinkedList.prototype.append = function(val) {
-  var newNode = new Node(val);
-  this.last().nxt = newNode;
+LinkedList.prototype.append = function(pair) {
+	//linked lists are made up of nodes
+  this.last().nxt = new Node(pair);
   this.length++;
 }
 
@@ -197,6 +654,7 @@ HashTable.prototype.findIndex = function(key) {
 
 HashTable.prototype.insert = function(key, val) {
   var idx = this.findIndex(key);
+	console.log(idx);
   var loc = this.store[idx];
   var pair = new ValuePair(key, val);
   if (loc) {
@@ -210,6 +668,7 @@ HashTable.prototype.insert = function(key, val) {
 
 HashTable.prototype.find = function(key) {
   var idx = this.findIndex(key);
+	console.log(idx);
   if (this.store[idx]) {
     return this.store[idx].findValue(key);
   } else {
