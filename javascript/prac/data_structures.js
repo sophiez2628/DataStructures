@@ -1,3 +1,54 @@
+//solution to parens
+String.prototype.insert = function(idx, letter) {
+	var arr = this.split("");
+	arr[idx] = letter;
+	return arr.join("");
+}
+
+var generateParens = function(count) {
+	var arr = [];
+	var str = "";
+	addParens(arr, str, count, count, 0);
+	return arr;
+}
+
+var addParens = function(arr, str, leftCount, rightCount, idx) {
+	if (rightCount === 0) {
+		arr.push(str);
+	}
+
+	if (leftCount > 0) {
+		str = str.insert(idx, "(");
+		addParens(arr, str, leftCount - 1, rightCount, idx + 1);
+	}
+
+	if (rightCount > leftCount) {
+		str = str.insert(idx,")");
+		addParens(arr, str, leftCount, rightCount - 1, idx + 1);
+	}
+}
+
+//parens - contains duplicates though
+var parens = function(n) {
+	if (n === 1) {
+		return ["()"]
+	} else {
+		var ans = parens(n - 1);
+		var newParens = [];
+		ans.forEach(function(item) {
+			var newItem = item + " ()";
+			var nextNew = "() " + item;
+			newParens.push(newItem);
+
+			if (newItem !== nextNew) {
+				newParens.push(nextNew);
+			}
+
+			newParens.push("(" + item + ")");
+		})
+		return newParens;
+	}
+}
 //max subarray in linear time
 var maxSubArrayLinearTime = function(arr) {
 	var startIdx = 0;
