@@ -1,3 +1,88 @@
+// minCost
+var small = [[1, 5],
+						[4, 8]];
+
+var grid = [[1, 5, 0],
+						[4, 8, 2],
+						[1, 5, 3]];
+//time complexity with memoization?
+var minCost = function(arr, start, end, memo) {
+	if (typeof memo === "undefined") {
+		memo = [[],[],[]];
+	}
+	if (!(start[0] < arr.length) || !(start[1] < arr[0].length)) {
+		return Infinity;
+	} else if (start[0] == end[0] && start[1] == end[1]) {
+		return arr[end[0]][end[1]];
+	} else if (memo[start[0]][start[1]]) {
+		return memo[start[0]][start[1]];
+	} {
+		var valStart = arr[start[0]][start[1]];
+		var rightMove = [start[0],start[1] + 1];
+		var downMove = [start[0] + 1, start[1]];
+		var diagonalMove = [start[0] + 1, start[1] + 1];
+		var min = Math.min(valStart + minCost(arr, rightMove, end, memo),
+						 valStart + minCost(arr, downMove, end, memo),
+					 	 valStart + minCost(arr, diagonalMove, end, memo));
+		memo[start[0]][start[1]] = min;
+		console.log(memo);
+		return min;
+	}
+}
+
+
+/*selling wine*/
+//recursive solution - time complexity 2^N
+var wineProfit = function(arr, leftIdx, rightIdx, day) {
+  if (typeof day === "undefined") {
+    day = 1;
+  }
+  if (leftIdx === rightIdx) {
+    return arr[leftIdx] * arr.length;
+  } else {
+    return Math.max(day * arr[rightIdx] + wineProfit(arr, leftIdx, rightIdx - 1, day + 1),
+    day * arr[leftIdx] + wineProfit(arr, leftIdx + 1, rightIdx, day + 1));
+  }
+}
+
+//paint fill
+var image = [[1, 1, 1, 1, 1, 1, 1, 1],
+              [1, 1, 1, 1, 1, 1, 0, 0],
+	            [1, 0, 0, 1, 1, 0, 1, 1],
+	            [1, 2, 2, 2, 2, 0, 1, 0],
+	            [1, 1, 1, 2, 2, 0, 1, 0],
+	            [1, 1, 1, 2, 2, 2, 2, 0],
+	            [1, 1, 1, 1, 1, 2, 1, 1],
+	            [1, 1, 1, 1, 1, 2, 2, 1],
+	            ];
+var findPoint = function(arr, point, val) {
+	var newPoint = [point[0] + val[0], point[1] + val[1]];
+	if (newPoint[0] < arr.length && newPoint[1] < arr[0].length) {
+		return newPoint;
+	} else {
+		return false;
+	}
+}
+
+CONSTANTS = [[-1,0],[-1,1],[0,1],[1,1],[1,0],[1,-1],[0,-1],[-1,-1]]
+var paintFill = function(arr, point, newColor, prevColor) {
+	var currentColor = arr[point[0]][point[1]];
+	if (typeof prevColor === "undefined") {
+		prevColor = currentColor;
+	}
+
+	if (prevColor === currentColor && currentColor !== newColor) {
+		arr[point[0]][point[1]] = newColor;
+		CONSTANTS.forEach(function(val) {
+			var newPoint = findPoint(arr, point, val);
+			if (newPoint) {
+				paintFill(arr, newPoint, newColor, prevColor);
+			}
+		})
+	}
+	return arr;
+}
+
 //solution to parens
 String.prototype.insert = function(idx, letter) {
 	var arr = this.split("");
