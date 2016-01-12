@@ -1,3 +1,100 @@
+//bucket sort
+
+
+//quicksort - nonrandomized version
+var quickSort = function(arr, startIdx, endIdx) {
+	if (startIdx < endIdx) {
+		var midIdx = partition(arr, startIdx, endIdx);
+		quickSort(arr, startIdx, midIdx - 1);
+		quickSort(arr, midIdx + 1, endIdx);
+	}
+	return arr;
+}
+
+
+var partition = function(arr, startIdx, pivotIdx) {
+	//after each parition, pivot is at correct place
+	var pivotValue = arr[pivotIdx];
+	var i = startIdx - 1;
+	for(var j = startIdx; j < pivotIdx; j++) {
+		if (arr[j] <= pivotValue) {
+			i += 1;
+			swap(arr, i, j);
+		}
+	}
+	swap(arr, pivotIdx, i + 1)
+	return i + 1;
+}
+//build two heaps to find a median
+
+//heap data structure & heapsort (worst case n log n, in place)
+var MinHeap = function(arr) {
+	this.store = arr;
+	this.heapSize = arr.length;
+}
+var MaxHeap = function(arr) {
+	this.store = arr;
+	this.heapSize = arr.length;
+	this.buildMaxHeap();
+}
+
+var heapSort = function(maxHeap) {
+	for(var i = 1; i < maxHeap.store.length; i++) {
+		swap(maxHeap.store, 0, maxHeap.heapSize - 1);
+		maxHeap.heapSize -= 1;
+		maxHeapify(maxHeap, 0);
+	}
+}
+
+var leftChild = function(idx) {
+	return 2 * idx + 1;
+}
+
+var rightChild = function(idx) {
+	return 2 * idx + 2;
+}
+
+var findMaxIdx = function(heap, idx) {
+	//figure out the biggest of the three
+	var leftIdx = leftChild(idx);
+	var rightIdx = rightChild(idx);
+	var largestIdx;
+	if (leftIdx < heap.heapSize && heap.store[leftIdx] > heap.store[idx]) {
+		//if leftIdx does not exist, no need to check
+		largestIdx = leftIdx
+	} else {
+		largestIdx = idx;
+	}
+
+	if (rightIdx < heap.heapSize && heap.store[rightIdx] > heap.store[largestIdx]) {
+		largestIdx = rightIdx;
+	}
+
+	return largestIdx;
+}
+
+var swap = function(arr, idx1, idx2) {
+	var temp = arr[idx1];
+	arr[idx1] = arr[idx2];
+	arr[idx2] = temp;
+}
+var maxHeapify = function(heap, idx) {
+	//push element down
+	var maxIdx = findMaxIdx(heap, idx);
+	if (maxIdx && maxIdx !== idx) {
+		//swap
+		swap(heap.store, idx, maxIdx);
+		return maxHeapify(heap, maxIdx);
+	}
+	return heap.store;
+}
+
+MaxHeap.prototype.buildMaxHeap = function() {
+	for(var i = this.store.length - 1; i >= 0; i--) {
+		maxHeapify(this,i);
+	}
+}
+
 // minCost
 var small = [[1, 5],
 						[4, 8]];
