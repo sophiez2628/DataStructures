@@ -1,3 +1,386 @@
+
+//max subarray linear time for all negative values?
+
+
+//animal shelter
+
+//sort stack - merge sort or quicksort on a stack
+var StackV = function() {
+	this.store = [];
+}
+
+StackV.prototype.push = function(val) {
+	this.store.push(val);
+	return this;
+}
+
+StackV.prototype.pop = function() {
+	return this.store.pop();
+}
+
+StackV.prototype.peekTop = function() {
+	return this.store[this.store.length - 1];
+}
+
+var mergeHelper = function(stackOne, stackTwo) {
+	debugger;
+	var newStack = new StackV();
+	while (stackOne.store.length > 0 && stackTwo.store.length > 0) {
+		if (stackOne.peekTop() < stackTwo.peekTop()) {
+			var val = stackOne.pop();
+			newStack.push(val);
+		} else {
+			var val = stackTwo.pop();
+			newStack.push(val);
+		}
+	}
+
+	while (stackOne.store.length > 0) {
+		newStack.push(stackOne.pop());
+	}
+
+	while (stackTwo.store.length > 0) {
+		newStack.push(stackTwo.pop());
+	}
+
+	while (newStack.store.length > 0) {
+		stackTwo.push(newStack.pop());
+	}
+	return stackTwo;
+}
+
+StackV.prototype.mergeSort = function() {
+	if (this.store.length > 1) {
+		var mid = Math.floor((this.store.length) / 2);
+		var stackOne = new StackV();
+		var stackTwo = new StackV();
+		var length = this.store.length;
+		for(var i = 0; i < length; i++) {
+			var val = this.pop();
+			if (i < mid) {
+				stackOne.push(val);
+			} else {
+				stackTwo.push(val);
+			}
+		}
+		return mergeHelper(stackOne.mergeSort(), stackTwo.mergeSort());
+	} else {
+		return this;
+	}
+}
+
+
+
+//quicksort again
+var swap = function(arr, idx1, idx2) {
+	var temp = arr[idx1];
+	arr[idx1] = arr[idx2];
+	arr[idx2] = temp;
+}
+var partition = function(arr, start, end) {
+	var pivot = arr[end];
+	var i = start - 1;
+	for(var j = start; j < end; j++) {
+		if (arr[i] <= pivot) {
+			i += 1;
+			swap(arr, i, j);
+			}
+	}
+	swap(arr, i + 1, end);
+	return i + 1;
+}
+var quicksort = function(arr, start, end) {
+	//ideally divides arr in half
+	if (end > start) {
+		var idx = partition(arr, start, end);
+		quicksort(arr, start, idx - 1);
+		quicksort(arr, idx + 1, end);
+	}
+	return arr;
+}
+//implement queue via stacks
+var MyQueue = function() {
+
+}
+//set of stacks
+var SetOfStacks = function() {
+	this.store = [[]];
+	//refers to idx
+	this.stacks = 0;
+}
+
+SetOfStacks.prototype.push = function(val) {
+	//max 3 items
+	if (this.store[this.stacks].length > 2) {
+		var newStack = [val];
+		this.store.push(newStack);
+		this.stacks += 1;
+	} else {
+		this.store[this.stacks].push(val);
+	}
+}
+
+SetOfStacks.prototype.pop = function() {
+	this.store[this.stacks].pop();
+	if (this.store[this.stacks].length === 0) {
+		this.store.pop();
+		this.stacks -= 1;
+	}
+}
+
+//stack min
+var Stack = function() {
+	this.store = [];
+	this.minStore = [];
+}
+
+Stack.prototype.push = function(val) {
+	this.store.push(val);
+	if (this.minStore.length === 0) {
+		this.minStore.push(val);
+	} else {
+		var lastIdx = this.minStore.length - 1;
+		if (this.minStore[lastIdx] > val) {
+			this.minStore.push(val);
+		} else {
+			this.minStore.push(this.minStore[lastIdx]);
+		}
+	}
+}
+
+Stack.prototype.pop = function(val) {
+	this.store.pop();
+	this.minStore.pop();
+}
+
+Stack.prototype.min = function() {
+	return this.minStore[this.minStore.length - 1];
+}
+
+//time and space complexity?
+
+//max subarray linear time
+var maxContiguousSum = function(arr) {
+	var bestSum = null;
+	var currentSum = 0;
+	var bestStartIdx = null;
+	var bestEndIdx = null;
+	for(var i = 0; i < arr.length; i++) {
+		currentSum += arr[i];
+
+		if (arr[i] > currentSum || bestEndIdx === null) {
+			bestStartIdx = i;
+			bestEndIdx = i;
+			bestSum = arr[i];
+			currentSum = arr[i];
+		} else if (bestSum === null || currentSum > bestSum) {
+			bestSum = currentSum;
+			bestEndIdx = i;
+		}
+	}
+	return arr.slice(bestStartIdx, bestEndIdx + 1);
+}
+
+//letters and numbers
+var test = ["e","d", "a", 3, "z", 1, 2, "b", "c", "d"];
+var subArray = function(arr) {
+	var max = 0;
+	var maxS;
+	var maxE;
+	for(var start = 0; start < arr.length; start++) {
+		var num = 0;
+		var letter = 0;
+		for(var end = start; end < arr.length; end++) {
+			if (typeof arr[end] === "string") {
+				letter += 1;
+			} else {
+				num += 1;
+			}
+
+			if (letter === num && num > max) {
+				max = num;
+				maxS = start;
+				maxE = end;
+			}
+		}
+	}
+
+	if (max > 0) {
+		return arr.slice(maxS, maxE + 1);
+	} else {
+		return undefined;
+	}
+}
+//shuffle array
+var shuffle = function(arr) {
+	for(var i = 0; i < arr.length; i++) {
+		var idx = Math.floor(Math.random() * arr.length);
+		var temp = arr[i];
+		arr[i] = arr[idx];
+		arr[idx] = temp;
+	}
+	return arr;
+}
+
+//random set
+var randomSet = function(arr, setSize) {
+	var set = [];
+	while (true) {
+			var idx = Math.floor(Math.random() * setSize);
+			if (arr[idx]) {
+				set.push(arr[idx]);
+				arr[idx] = undefined;
+			}
+			if (set.length == setSize) {
+				return set;
+			}
+	}
+}
+
+//sorted search for matrix
+var matrix = [[1,2,3],[4,5,6],[7,8,9]];
+var bSearch = function(input, start, end, val) {
+	debugger;
+	if (end >= start) {
+		var mid = Math.floor((start + end) / 2);
+		var compareVal;
+		if (Array.isArray(input[0])) {
+			//search array
+			compareVal = input[mid][0];
+		} else {
+			compareVal = input[mid];
+		}
+		if (compareVal === val) {
+			return mid;
+		} else if (val > compareVal) {
+			return bSearch(input, mid + 1, end, val);
+		} else {
+			return bSearch(input, start, mid - 1, val);
+		}
+	} else {
+		return undefined;
+	}
+}
+var sortedMatrixSearch = function(matrix, val) {
+	var mid = Math.floor(matrix.length / 2);
+	debugger;
+	var ans = bSearch(matrix, 0, mid, val) || bSearch(matrix, mid + 1, matrix.length - 1, val);
+
+	if (ans) {
+		return ans;
+	} else {
+		//perform search on columns
+		if (val < mid) {
+			var start = 0;
+			var end = mid;
+		} else {
+			var start = mid + 1;
+			var end = matrix.length;
+		}
+
+		for(var i = start; i < end; i++) {
+			var val = bSearch(matrix[i], 1, matrix[i].length - 1, val);
+			if (val) {
+				return val;
+			}
+		}
+	}
+	return undefined;
+}
+
+//what happens to binary search if there are duplicates?
+	//look after or before to check
+
+//search in rotated array
+var rotationIdx = function(arr) {
+	for(var i = 1; i < arr.length; i++) {
+		if (arr[i] < arr[0]) {
+			return i;
+		}
+	}
+}
+
+var binarySearch = function(arr, val, start, end) {
+	if (end >= start) {
+		var mid = Math.floor((start + end)/2);
+		if (arr[mid] === val) {
+			return mid;
+		} else if (arr[mid] > val) {
+			return binarySearch(arr, val, start, mid - 1);
+		} else {
+			return binarySearch(arr, val, mid + 1, end);
+		}
+	} else {
+		return undefined;
+	}
+}
+
+var binarySearchForRotated = function(arr, val) {
+	var idx = rotationIdx(arr);
+	return binarySearch(arr, val, 0, idx - 1) || binarySearch(arr, val, idx, arr.length - 1);
+}
+
+//first count the number of times the letter appears
+//and put information into an array
+
+String.prototype.sort = function() {
+	return this.split("").sort().join("");
+}
+
+var swap = function(arr, idx, j) {
+	var temp = arr[idx];
+	arr[idx] = arr[j];
+	arr[j] = temp;
+}
+
+var groupAnagram = function(arr) {
+	var idx = 0;
+	while (idx < arr.length - 1) {
+		for(var i = idx + 1; i < arr.length; i++) {
+			var sortedStr = arr[i].sort();
+			if (sortedStr === arr[idx].sort()) {
+				idx += 1;
+				swap(arr, idx, i);
+			}
+		}
+		idx += 1;
+	}
+	return arr;
+}
+
+//permutations of a string without duplicates?
+	//possibly a hash table
+
+//setting timers
+var printDate = function() {
+	debugger;
+	console.log(new Date());
+	timer = setTimeout(printDate, 1000);
+}
+
+// var timer = setTimeout(printDate, 1000);
+
+//radix sort - works well on fixed length strings as well
+	//use ten buckets to sort 0 - 9
+	//pad numbers if necessary so that all numbers have the same digits
+
+var radixSort = function(arr) {
+	var holder = [0,0,0,0,0,0,0,0,0];
+	for(var place = (arr[0] + "").length - 1; place >= 0; place--) {
+		for(var i = 0; i < arr.length; i++) {
+			var strVersion = arr[i] + "";
+			holder[Number(strVersion[place])] += 1;
+		}
+	}
+
+	var sortedArr = [];
+	for(var i = 0; i < holder.length; i++) {
+		for(var j = 0; j < holder[i]; j++) {
+			sortedArr.push(i);
+		}
+	}
+	return sortedArr;
+}
 //bucket sort
 
 
