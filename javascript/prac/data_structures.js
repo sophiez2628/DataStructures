@@ -4,6 +4,52 @@
 
 //animal shelter
 
+//dfs iterative vs recursive
+
+
+
+
+//build order
+// topoBuildOrder(["a", "b", "c", "d", "e", "f"],
+// 							 [["d", "a"], ["b","f"], ["d","b"], ["a", "f"], ["c", "d"]]);
+
+var searchFor = function(dependencies, hash, item) {
+	for(var i = 0; i < dependencies.length; i++) {
+		if (dependencies[i][0] === item && hash.find(dependencies[i][1]) === undefined) {
+			return dependencies[i][1];
+		}
+	}
+	return undefined;
+}
+
+var dfsForBuildOrder = function(projects, dependencies) {
+	debugger;
+	var visited = new HashTable();
+	var stack = [projects[0]];
+	var order = [];
+	for(var i = 1; i < projects.length; i++) {
+		while (stack.length > 0) {
+			var found = searchFor(dependencies, visited, stack[stack.length - 1]);
+			if (found) {
+				stack.push(found);
+			} else {
+				visited.insert(stack[stack.length - 1], true);
+				order.push(stack[stack.length - 1]);
+				stack.pop();
+			}
+		}
+
+		if (visited.find(projects[i]) === undefined) {
+			stack.push(projects[i]);
+		}
+	}
+
+	return order;
+}
+
+var topoBuildOrder = function(projects, dependencies) {
+	return dfsForBuildOrder(projects, dependencies);
+}
 //sort stack - merge sort or quicksort on a stack
 var StackV = function() {
 	this.store = [];
@@ -349,7 +395,7 @@ var groupAnagram = function(arr) {
 }
 
 //permutations of a string without duplicates?
-	//possibly a hash table
+	//possibly a visited table
 
 //setting timers
 var printDate = function() {
