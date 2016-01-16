@@ -1316,7 +1316,6 @@ HashTable.prototype.findIndex = function(key) {
 
 HashTable.prototype.insert = function(key, val) {
   var idx = this.findIndex(key);
-	console.log(idx);
   var loc = this.store[idx];
   var pair = new ValuePair(key, val);
   if (loc) {
@@ -1330,7 +1329,6 @@ HashTable.prototype.insert = function(key, val) {
 
 HashTable.prototype.find = function(key) {
   var idx = this.findIndex(key);
-	console.log(idx);
   if (this.store[idx]) {
     return this.store[idx].findValue(key);
   } else {
