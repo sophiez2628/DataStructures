@@ -1,5 +1,4 @@
 
-
 //adjacency list for undirected graph
 // var Node = function(val) {
 //   this.val = val;
@@ -28,30 +27,73 @@
 // nine.children = [five];
 
 //binary tree
-var Node = function(val) {
-  this.val = val;
-  this.children = [];
+// var Node = function(val, left, right) {
+//   this.val = val;
+//   this.left = left;
+//   this.right = right;
+// }
+//
+// nine = new Node(9);
+// eight = new Node(8);
+// seven = new Node(7);
+// six = new Node(6, seven, eight);
+// five = new Node(5, six, nine);
+// four = new Node(4);
+// three = new Node(3, four);
+// two = new Node(2, three);
+// one = new Node(1, two, five);
+
+
+//"bubble up findings to earlier nodes in the stack"
+
+var commonAncestor = function(root, node1, node2) {
+  if (typeof root === "undefined") {
+    return null;
+  }
+  debugger;
+  var left = commonAncestor(root.left, node1, node2);
+  var right = commonAncestor(root.right, node1, node2);
+
+  if (left && right) {
+    return root;
+  } else if (root === node1 || root === node2) {
+    return root;
+  } else if (left === null && right) {
+    return right;
+  } else if (right == null && left) {
+    return left;
+  } else {
+    return null;
+  }
 }
 
-one = new Node(1);
-two = new Node(2);
-three = new Node(3);
-four = new Node(4);
-five = new Node(5);
-six = new Node(6);
-seven = new Node(7);
-eight = new Node(8);
-nine = new Node(9);
+//simplest case of recursion - sum - answers bubble up to the top - why?
+//because it is returning the value as a function
+var sum = function(num) {
+  if (num <= 1) {
+    return num;
+  }
+  //reduce the problem until it hits the base case
+  return num + sum(num - 1);
+}
 
-one.children = [two, five];
-two.children = [three];
-three.children = [four];
-four.children = [];
-five.children = [six, nine];
-six.children = [seven, eight];
-seven.children = [];
-eight.children = [];
-nine.children = [];
+// var commonAncestor = function(root, node1, node2) {
+//   if (typeof root === "undefined") {
+//     return null;
+//   }
+//
+//   var left = commonAncestor(root.left, node1, node2);
+//   var right = commonAncestor(root.right, node1, node2);
+//
+//   if (left && right) {
+//     return root;
+//   } else if (root === node1 || root === node2) {
+//     return root;
+//   } else {
+//     return left === null ? right : left;
+//   }
+// }
+
 //dfs for two items
 var dfsExist = function(item, node1, node2, arr) {
   if (typeof arr === "undefined") {
